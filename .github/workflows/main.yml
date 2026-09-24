@@ -11,10 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository recursively
+    - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
+
+    - name: Manually clone godot-cpp and luau submodules
+      run: |
+        rm -rf extern/godot-cpp extern/luau
+        git clone -b 4.6 https://github.com/godotengine/godot-cpp.git extern/godot-cpp
+        git clone https://github.com/Roblox/luau.git extern/luau
 
     - name: Set up Python
       uses: actions/setup-python@v5
