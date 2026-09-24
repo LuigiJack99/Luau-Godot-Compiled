@@ -1,4 +1,4 @@
-name: Build Luau-Godot Extension
+name: Build Luau For Godot Extension
 
 on:
   push:
