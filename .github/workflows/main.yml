@@ -14,12 +14,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Clone dependencies manually
+    - name: Clone dependencies correctly
       run: |
         rm -rf extern/godot-cpp extern/luau
         mkdir -p extern
-        git clone --depth 1 https://github.com/godotengine/godot-cpp.git extern/godot-cpp
-        git clone --depth 1 https://github.com/Roblox/luau.git extern/luau
+        # Clone godot-cpp matching stable 4.x api headers
+        git clone --depth 1 -b 4.5-stable https://github.com/godotengine/godot-cpp.git extern/godot-cpp
+        # Clone Luau recursively so internal files/submodules aren't missing
+        git clone --recursive --depth 1 https://github.com/Roblox/luau.git extern/luau
 
     - name: Set up Python
       uses: actions/setup-python@v5
