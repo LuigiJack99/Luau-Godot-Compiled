@@ -14,13 +14,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download dependencies manually
+    - name: Clone dependencies manually
       run: |
-        mkdir -p extern/godot-cpp extern/luau
-        echo "Downloading godot-cpp..."
-        curl -L https://github.com/godotengine/godot-cpp/archive/refs/tags/4.6-stable.tar.gz | tar xz --strip-components=1 -C extern/godot-cpp
-        echo "Downloading luau..."
-        curl -L https://github.com/Roblox/luau/archive/refs/heads/main.tar.gz | tar xz --strip-components=1 -C extern/luau
+        rm -rf extern/godot-cpp extern/luau
+        mkdir -p extern
+        git clone --depth 1 -b 4.6 https://github.com/godotengine/godot-cpp.git extern/godot-cpp
+        git clone --depth 1 https://github.com/Roblox/luau.git extern/luau
 
     - name: Set up Python
       uses: actions/setup-python@v5
