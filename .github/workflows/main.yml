@@ -1,4 +1,4 @@
-name: Build Luau For Godot Extension
+name: Build Luau-Godot Extension
 
 on:
   push:
@@ -14,13 +14,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Clone dependencies correctly
+    - name: Clone dependencies cleanly
       run: |
         rm -rf extern/godot-cpp extern/luau
         mkdir -p extern
-        # Clone godot-cpp matching stable 4.x api headers
-        git clone --depth 1 -b 4.5-stable https://github.com/godotengine/godot-cpp.git extern/godot-cpp
-        # Clone Luau recursively so internal files/submodules aren't missing
+        # Clone latest default godot-cpp and luau repositories
+        git clone --depth 1 https://github.com/godotengine/godot-cpp.git extern/godot-cpp
         git clone --recursive --depth 1 https://github.com/Roblox/luau.git extern/luau
 
     - name: Set up Python
@@ -33,9 +32,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install scons
 
-    - name: Compile Extension for Linux
+    - name: Compile Extension for Linux (Targeting Godot 4.6)
       run: |
-        scons target=template_debug platform=linux arch=x86_64
+        scons target=template_debug platform=linux arch=x86_64 api_version=4.6
 
     - name: Upload Compiled Binaries
       uses: actions/upload-artifact@v4
